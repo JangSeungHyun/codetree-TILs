@@ -45,7 +45,7 @@ class tree:
 
             for child_node in node.child:
                 if len(child_node.child) == 0:
-                    curr_height = curr_height + 1
+                    curr_height = 1
                 else:
                     curr_height = find_height(child_node) + 1
                 
@@ -164,7 +164,6 @@ def main():
     inst_num = int(input())
 
     for i in range(inst_num):
-        print(i)
         inst = input().split()
 
         if inst[0] == '100': # 노드 추가
