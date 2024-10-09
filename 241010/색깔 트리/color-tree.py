@@ -276,21 +276,21 @@ class Tree:
     def return_values(self):
 
         def sub_func(sub_root, total_value: int, color_set: set):
-
+            
+            curr_sub_colorset = set([])
             # 자식 노드 처리
             if len(sub_root.child) == 0:
-                color_set.add(sub_root.color)
+                curr_sub_colorset.add(sub_root.color)
                 total_value += 1**2
             else:
-                curr_sub_colorset = set([])
                 for child_of_sub_root in sub_root.child:
                     curr_sub_colorset, total_value = sub_func(child_of_sub_root, total_value, curr_sub_colorset)
                 
                 curr_sub_colorset.add(sub_root.color)
                 total_value += len(curr_sub_colorset) ** 2
-                color_set = color_set.union(curr_sub_colorset)
+                curr_sub_colorset = color_set.union(curr_sub_colorset)
 
-            return color_set, total_value
+            return curr_sub_colorset, total_value
 
         total_value = 0
 
