@@ -36,45 +36,43 @@ class tree:
                 if curr_node.m_id == m_id:
                     return curr_node, sub_root
 
+    # node의 height를 찾는 함수
+    def find_height(self, node):
             
-    def add_node(self, m_id, p_id, color, max_depth):
+        max_height = 1
+        curr_height = 1
 
-        # node의 height를 찾는 함수
-        def find_height(node):
-            
-            max_height = 1
+        if len(node.child) == 0:
             curr_height = 1
-
-            if len(node.child) == 0:
-                curr_height = 1
-            else:
-                for child_node in node.child:
-                    curr_height = find_height(child_node) + 1
+        else:
+            for child_node in node.child:
+                curr_height = self.find_height(child_node) + 1
                 
-                    if max_height < curr_height:
-                        max_height = curr_height
+                if max_height < curr_height:
+                    max_height = curr_height
             
-            return max_height 
+        return max_height 
 
-        def find_node_and_stack(root: node, stack: list, p_id: int):
+    def find_node_and_stack(self, root: node, stack: list, p_id: int):
             
-            stack.append(root)
+        stack.append(root)
             
-            if root.m_id == p_id:
+        if root.m_id == p_id:
+            return stack
+        else:
+            if len(root.child) == 0:
+                stack.pop(-1)
                 return stack
             else:
-                if len(root.child) == 0:
-                    stack.pop(-1)
-                    return stack
-                else:
-                    for node in root.child:
-                        new_stack = find_node_and_stack(node, stack, p_id)
-                        if stack[-1].m_id == p_id: # p_id == m_id인 노드 찾음
-                            return new_stack
-                        else:
-                            stack.pop(-1)
-                            return stack
-                    
+                for node in root.child:
+                    new_stack = self.find_node_and_stack(node, stack, p_id)
+                    if stack[-1].m_id == p_id: # p_id == m_id인 노드 찾음
+                        return new_stack
+                    else:
+                        stack.pop(-1)
+                        return stack
+            
+    def add_node(self, m_id, p_id, color, max_depth):
 
         if p_id == -1: # 새로운 트리 생성 필요
             self.root.child.append(node(m_id, p_id, color, max_depth))
@@ -93,18 +91,16 @@ class tree:
             else:
                 # 경로 stack 구성
                 stack = list()
-                stack = find_node_and_stack(sub_root, stack, p_id)
+                stack = self.find_node_and_stack(sub_root, stack, p_id)
 
                 while len(stack) > 0:
                     curr_root = stack.pop(len(stack) - 1)
-                    curr_root_height = find_height(curr_root)
+                    curr_root_height = self.find_height(curr_root)
                     # print(f"{m_id}_{curr_root.m_id}: {curr_root_height}")
 
                     if curr_root_height + 1 > curr_root.max_depth:
                         # print(curr_root.max_depth)
                         return
-                    else:
-                        continue
 
                 # print(p_id)
                 # print(p_node)
@@ -134,6 +130,10 @@ class tree:
     def return_values(self):
 
         def retrieve_subtree_num_colors(curr_root, color_set):
+            
+            if len(color_set) >= 5:
+                return color_set
+
             color_set.add(curr_root.color)
             
             if len(curr_root.child) > 0:
@@ -169,7 +169,6 @@ def main():
 
     for i in range(inst_num):
         inst = input().split()
-
         if inst[0] == '100': # 노드 추가
             curr_tree.add_node(int(inst[1]), int(inst[2]), int(inst[3]), int(inst[4]))
         elif inst[0] == '200': # 색깔 변경
