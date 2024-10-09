@@ -66,7 +66,7 @@ class tree:
         curr_height = 1
 
         if len(node.child) == 0:
-            curr_height = 1
+            max_height = 1
         else:
             for child_node in node.child:
                 curr_height = self.find_height(child_node) + 1
@@ -111,11 +111,14 @@ class tree:
                     curr_node, _ = self.find_node(curr_id)
                     curr_node_height = self.find_height(curr_node)
 
-                    if curr_node_height + 1 > curr_node.max_depth:
-                        return
-                    else:
+                    if len(curr_node.child) != 0:
                         curr_id = curr_node.p_id
-
+                        continue
+                    else:
+                        if curr_node_height + 1 > curr_node.max_depth:
+                            return
+                        else:
+                            curr_id = curr_node.p_id
                 p_node.child.append(node(m_id, p_id, color, max_depth))
 
 
