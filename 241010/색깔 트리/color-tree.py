@@ -100,7 +100,7 @@ class tree:
                     # print(f"{m_id}_{curr_root.m_id}: {curr_root_height}")
 
                     if curr_root_height + 1 > curr_root.max_depth:
-                        print(curr_root.max_depth)
+                        # print(curr_root.max_depth)
                         return
                     else:
                         continue
