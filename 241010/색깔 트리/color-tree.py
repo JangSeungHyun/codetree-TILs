@@ -164,7 +164,6 @@ def main():
     inst_num = int(input())
 
     for i in range(inst_num):
-
         inst = input().split()
 
         if inst[0] == '100': # 노드 추가
