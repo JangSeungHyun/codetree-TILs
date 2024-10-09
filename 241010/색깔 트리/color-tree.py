@@ -22,19 +22,45 @@ class tree:
     # m_id로 node 찾아서 리턴하는 함수
     def find_node(self, m_id):
         
-        queue = list()
+        stack = list()
+        visited = list()
+
         for sub_root in self.root.child:
+            stack.append(sub_root)
 
-            queue.append(sub_root)
+            while stack:
+                curr_node = stack.pop(-1)
+                if curr_node.m_id not in visited:
+                    visited.append(curr_node.m_id)
 
-            while len(queue) > 0:
-                curr_node = queue.pop(0)
+                    if curr_node.m_id == m_id:
+                        return curr_node, sub_root
 
-                for node in curr_node.child:
-                    queue.append(node)
+                    if len(curr_node.child) == 0:
+                        continue
+                    else:
+                        for node in curr_node.child:
+                            stack.append(node)
+                            
+                else:
+                    continue
 
-                if curr_node.m_id == m_id:
-                    return curr_node, sub_root
+
+        
+        # queue = list()
+
+        # for sub_root in self.root.child:
+
+        #     queue.append(sub_root)
+
+        #     while len(queue) > 0:
+        #         curr_node = queue.pop(0)
+
+        #         for node in curr_node.child:
+        #             queue.append(node)
+
+        #         if curr_node.m_id == m_id:
+        #             return curr_node, sub_root
 
     # node의 height를 찾는 함수
     def find_height(self, node):
@@ -52,6 +78,7 @@ class tree:
                     max_height = curr_height
             
         return max_height 
+
 
     def find_node_and_stack(self, root: node, stack: list, p_id: int):
             
@@ -71,19 +98,12 @@ class tree:
                     else:
                         stack.pop(-1)
                         return stack
+
             
     def add_node(self, m_id, p_id, color, max_depth):
 
         if p_id == -1: # 새로운 트리 생성 필요
             self.root.child.append(node(m_id, p_id, color, max_depth))
-            # if self.root == None: # 루트 새로 지정
-            #     self.root =
-            # else: # 루트 대체 필요 -> 새로운 루트의 max_depth와 height 비교필요
-            #     if find_height(self.root) + 1 > self.root.max_depth:
-            #         return
-            #     temp = self.root
-            #     self.root = node(m_id, p_id, color, max_depth)
-            #     self.root.child.append(temp)
         else: # max depth
             p_node, sub_root = self.find_node(p_id)
             if len(p_node.child) != 0:
@@ -102,8 +122,6 @@ class tree:
                         # print(curr_root.max_depth)
                         return
 
-                # print(p_id)
-                # print(p_node)
                 p_node.child.append(node(m_id, p_id, color, max_depth))
 
 
@@ -146,19 +164,6 @@ class tree:
 
             return color_set, total_value
 
-        # def retrieve_subtree_num_colors(curr_root, color_set):
-
-        #     color_set.add(curr_root.color)
-
-        #     if len(color_set) >= 5:
-        #         return color_set
-            
-        #     if len(curr_root.child) > 0:
-        #         for node in curr_root.child:
-        #             color_set = retrieve_subtree_num_colors(node, color_set)
-                
-        #     return color_set
-
         total_value = 0
 
         for sub_root in self.root.child:
@@ -167,19 +172,6 @@ class tree:
 
             color_set, curr_sub_total_value = sub_func(sub_root, curr_sub_total_value, color_set)
             total_value += curr_sub_total_value
-
-        # for sub_root in self.root.child:
-        #     queue = list()
-        #     queue.append(sub_root)
-
-        #     while len(queue) > 0:
-        #         curr_root = queue.pop(0)
-        #         for node in curr_root.child:
-        #             queue.append(node)
-                
-        #         color_set = set([])
-        #         num_color = len(retrieve_subtree_num_colors(curr_root, color_set))
-        #         total_value += num_color ** 2
 
         print(total_value)
 
