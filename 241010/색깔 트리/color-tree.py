@@ -129,33 +129,57 @@ class tree:
     
     def return_values(self):
 
-        def retrieve_subtree_num_colors(curr_root, color_set):
-            
-            if len(color_set) >= 5:
-                return color_set
+        def sub_func(sub_root: node, total_value: int, color_set: set):
 
-            color_set.add(curr_root.color)
-            
-            if len(curr_root.child) > 0:
-                for node in curr_root.child:
-                    color_set = retrieve_subtree_num_colors(node, color_set)
+            # 자식 노드 처리
+            if len(sub_root.child) == 0:
+                color_set.add(sub_root.color)
+                total_value += 1**2
+            else:
+                curr_sub_colorset = set([])
+                for child_of_sub_root in sub_root.child:
+                    curr_sub_colorset, total_value = sub_func(child_of_sub_root, total_value, curr_sub_colorset)
                 
-            return color_set
+                curr_sub_colorset.add(sub_root.color)
+                total_value += len(curr_sub_colorset) ** 2
+                color_set = color_set.union(curr_sub_colorset)
+
+            return color_set, total_value
+
+        # def retrieve_subtree_num_colors(curr_root, color_set):
+
+        #     color_set.add(curr_root.color)
+
+        #     if len(color_set) >= 5:
+        #         return color_set
+            
+        #     if len(curr_root.child) > 0:
+        #         for node in curr_root.child:
+        #             color_set = retrieve_subtree_num_colors(node, color_set)
+                
+        #     return color_set
 
         total_value = 0
 
         for sub_root in self.root.child:
-            queue = list()
-            queue.append(sub_root)
+            color_set = set([])
+            curr_sub_total_value = 0
 
-            while len(queue) > 0:
-                curr_root = queue.pop(0)
-                for node in curr_root.child:
-                    queue.append(node)
+            color_set, curr_sub_total_value = sub_func(sub_root, curr_sub_total_value, color_set)
+            total_value += curr_sub_total_value
+
+        # for sub_root in self.root.child:
+        #     queue = list()
+        #     queue.append(sub_root)
+
+        #     while len(queue) > 0:
+        #         curr_root = queue.pop(0)
+        #         for node in curr_root.child:
+        #             queue.append(node)
                 
-                color_set = set([])
-                num_color = len(retrieve_subtree_num_colors(curr_root, color_set))
-                total_value += num_color ** 2
+        #         color_set = set([])
+        #         num_color = len(retrieve_subtree_num_colors(curr_root, color_set))
+        #         total_value += num_color ** 2
 
         print(total_value)
 
