@@ -22,41 +22,41 @@ class tree:
     # m_id로 node 찾아서 리턴하는 함수
     def find_node(self, m_id):
 
-        queue = list()
-        for sub_root in self.root.child:
-
-            queue.append(sub_root)
-
-            while len(queue) > 0:
-                curr_node = queue.pop(0)
-
-                for node in curr_node.child:
-                    queue.append(node)
-
-                if curr_node.m_id == m_id:
-                    return curr_node, sub_root
-        
-        # stack = list()
-        # visited = list()
-
+        # queue = list()
         # for sub_root in self.root.child:
-        #     stack.append(sub_root)
 
-        #     while stack:
-        #         curr_node = stack.pop(-1)
-        #         if curr_node.m_id not in visited:
-        #             visited.append(curr_node.m_id)
+        #     queue.append(sub_root)
 
-        #             if curr_node.m_id == m_id:
-        #                 return curr_node, sub_root
+        #     while len(queue) > 0:
+        #         curr_node = queue.pop(0)
 
-        #             if len(curr_node.child) == 0:
-        #                 continue
-        #             else:
-        #                 for node in curr_node.child:
-        #                     stack.append(node)
-        #         else:
-        #             continue
+        #         for node in curr_node.child:
+        #             queue.append(node)
+
+        #         if curr_node.m_id == m_id:
+        #             return curr_node, sub_root
+        
+        stack = list()
+        visited = list()
+
+        for sub_root in self.root.child:
+            stack.append(sub_root)
+
+            while stack:
+                curr_node = stack.pop(-1)
+                if curr_node.m_id not in visited:
+                    visited.append(curr_node.m_id)
+
+                    if curr_node.m_id == m_id:
+                        return curr_node, sub_root
+
+                    if len(curr_node.child) == 0:
+                        continue
+                    else:
+                        for node in curr_node.child:
+                            stack.append(node)
+                else:
+                    continue
 
 
     # node의 height를 찾는 함수
@@ -120,7 +120,7 @@ class tree:
                         return
                     else:
                         curr_id = curr_node.p_id
-                        
+
                 p_node.child.append(node(m_id, p_id, color, max_depth))
 
 
