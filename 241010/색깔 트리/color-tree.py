@@ -41,26 +41,10 @@ class tree:
                     else:
                         for node in curr_node.child:
                             stack.append(node)
-                            
+
                 else:
                     continue
 
-
-        
-        # queue = list()
-
-        # for sub_root in self.root.child:
-
-        #     queue.append(sub_root)
-
-        #     while len(queue) > 0:
-        #         curr_node = queue.pop(0)
-
-        #         for node in curr_node.child:
-        #             queue.append(node)
-
-        #         if curr_node.m_id == m_id:
-        #             return curr_node, sub_root
 
     # node의 height를 찾는 함수
     def find_height(self, node):
@@ -105,22 +89,33 @@ class tree:
         if p_id == -1: # 새로운 트리 생성 필요
             self.root.child.append(node(m_id, p_id, color, max_depth))
         else: # max depth
+
             p_node, sub_root = self.find_node(p_id)
             if len(p_node.child) != 0:
                 p_node.child.append(node(m_id, p_id, color, max_depth))
             else:
-                # 경로 stack 구성
-                stack = list()
-                stack = self.find_node_and_stack(sub_root, stack, p_id)
+                curr_id = p_id
+                while curr_id != -1:
+                    curr_node, _ = self.find_node(curr_id)
+                    curr_node_height = self.find_height(curr_node)
 
-                while len(stack) > 0:
-                    curr_root = stack.pop(len(stack) - 1)
-                    curr_root_height = self.find_height(curr_root)
-                    # print(f"{m_id}_{curr_root.m_id}: {curr_root_height}")
-
-                    if curr_root_height + 1 > curr_root.max_depth:
-                        # print(curr_root.max_depth)
+                    if curr_node_height + 1 > curr_node.max_depth:
                         return
+                    else:
+                        curr_id = curr_node.p_id
+
+                # # 경로 stack 구성
+                # stack = list()
+                # stack = self.find_node_and_stack(sub_root, stack, p_id)
+
+                # while len(stack) > 0:
+                #     curr_root = stack.pop(len(stack) - 1)
+                #     curr_root_height = self.find_height(curr_root)
+                #     # print(f"{m_id}_{curr_root.m_id}: {curr_root_height}")
+
+                #     if curr_root_height + 1 > curr_root.max_depth:
+                #         # print(curr_root.max_depth)
+                #         return
 
                 p_node.child.append(node(m_id, p_id, color, max_depth))
 
