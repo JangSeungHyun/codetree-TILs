@@ -43,14 +43,14 @@ class tree:
             max_height = 1
             curr_height = 1
 
-            for child_node in node.child:
-                if len(child_node.child) == 0:
-                    curr_height = 1
-                else:
+            if len(node.child) == 0:
+                curr_height = 1
+            else:
+                for child_node in node.child:
                     curr_height = find_height(child_node) + 1
                 
-                if max_height < curr_height:
-                    max_height = curr_height
+                    if max_height < curr_height:
+                        max_height = curr_height
             
             return max_height 
 
@@ -97,8 +97,10 @@ class tree:
                 while len(stack) > 0:
                     curr_root = stack.pop(len(stack) - 1)
                     curr_root_height = find_height(curr_root)
+                    # print(f"{m_id}_{curr_root.m_id}: {curr_root_height}")
 
                     if curr_root_height + 1 > curr_root.max_depth:
+                        print(curr_root.max_depth)
                         return
                     else:
                         continue
