@@ -41,7 +41,6 @@ class tree:
                     else:
                         for node in curr_node.child:
                             stack.append(node)
-
                 else:
                     continue
 
@@ -103,19 +102,6 @@ class tree:
                         return
                     else:
                         curr_id = curr_node.p_id
-
-                # # 경로 stack 구성
-                # stack = list()
-                # stack = self.find_node_and_stack(sub_root, stack, p_id)
-
-                # while len(stack) > 0:
-                #     curr_root = stack.pop(len(stack) - 1)
-                #     curr_root_height = self.find_height(curr_root)
-                #     # print(f"{m_id}_{curr_root.m_id}: {curr_root_height}")
-
-                #     if curr_root_height + 1 > curr_root.max_depth:
-                #         # print(curr_root.max_depth)
-                #         return
 
                 p_node.child.append(node(m_id, p_id, color, max_depth))
 
