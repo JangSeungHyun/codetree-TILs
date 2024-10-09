@@ -113,18 +113,17 @@ class tree:
 
     # node의 subtree 모두 color 변경해야
     def change_node_color(self, m_id, color):
-
-        def change_sub_tree(curr_root_node, color):
-            curr_root_node.change_color(color)
-            if len(curr_root_node.child) != 0:
-                for child in curr_root_node.child:
-                    change_sub_tree(child, color)
-                return
-            else:
-                return
-
+        
         curr_root, sub_root = self.find_node(m_id)
-        change_sub_tree(curr_root, color)
+
+        queue = list()
+        queue.append(curr_root)
+
+        while len(queue) > 0:
+            curr_node = queue.pop(0)
+            for child_node in curr_node.child:
+                queue.append(child_node)
+            curr_node.change_color(color)
 
 
     def find_color(self, m_id):
